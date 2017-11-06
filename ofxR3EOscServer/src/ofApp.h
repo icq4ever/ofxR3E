@@ -2,12 +2,18 @@
 
 #include "ofMain.h"
 #include "ofxSharedMemory.h"
+#include "ofxOsc.h"
 #include "r3e.h"
 #include "utils.h"
 
 #define ALIVE_SEC 600
 #define INTERVAL_MS 100
-//#define _USE_MATH_DEFINES
+
+#define PORT 9000
+#define HOST "192.168.100.255"
+
+// var to string
+#define VAR2STRING(a) (#a)
 
 class SPageGameData {
 public:
@@ -342,4 +348,26 @@ public:
 	int err_code = 0;
 
 	bool isConnected = false;
+
+	ofxOscSender sender;
+
+	// telemetry data
+	string	carModel;
+	float	maxRPM;
+	float	rpm;
+
+	int		gear;
+	float	speedKph;
+
+	void sendIntTelemetryMessage(string addressEndpoint, int value);
+	void sendFloatTelemetryMessage(string addressEndpoint, float value);
+	void sendStringTelemetryMessage(string addressEndpoint, string value);
+	void sendBoolTelemetryMessage(string addressEndpoint, bool value);
 };
+
+
+//class TelemetryINformation {
+//public:
+//	string carModel;
+//	string 
+//};
