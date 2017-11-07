@@ -50,10 +50,13 @@ public:
 	// control information
 	float throttlePedal, brakePedal, clutchPedal;
 
-	// draw pedal status
+	// draw telemetry
 	void drawInputStatus(int x, int y);
 	void drawRpmSpeed(int x, int y);
 	void drawLapTimeInformation(int x, int y);
+
+	// rpmDrawing
+	void rpmDrawing(int x, int y);
 
 	timeTemplate lapT(float seconds);
 	string lapT2String(timeTemplate t);
@@ -61,5 +64,8 @@ public:
 	timeTemplate currentLap;
 	timeTemplate lastLap;
 	timeTemplate bestLap;
+
+	ofFbo rpmFbo;
+	//ofPixels rpmPixels;
 };
 

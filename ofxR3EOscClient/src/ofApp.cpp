@@ -5,6 +5,13 @@ void ofApp::setup(){
 	ofSetVerticalSync(true);
 	ofSetFrameRate(60);
 	receiver.setup(PORT);
+	ofBackground(54);
+
+	rpmFbo.allocate(600, 600, GL_RGBA);
+	rpmFbo.begin();
+	ofClear(0);
+	rpmFbo.end();
+	//rpmPixels.allocate(600, 600, OF_PIXELS_RGBA);
 }
 
 //--------------------------------------------------------------
@@ -38,15 +45,28 @@ void ofApp::update(){
 		if (m.getAddress() == messageAddrHeader + "brakePedal")		brakePedal = m.getArgAsFloat(0);
 		if (m.getAddress() == messageAddrHeader + "clutchPedal")	clutchPedal = m.getArgAsFloat(0);
 	}
+
+	rpmFbo.begin();
+	ofPushMatrix();
+	ofSetHexColor(0xFFFFFF);
+	ofNoFill();
+	ofTranslate(150, 150);
+	ofRotate(ofMap(lapProgress, 0, 1, 0, 360));
+	ofDrawLine(50, 0, ofMap(rpm, 0, rpmMax, 50, 150), 0);
+	ofPopMatrix();
+	rpmFbo.end();
+
+	//rpmFbo.readToPixels(rpmPixels);
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	ofBackground(54);
+	//ofBackground(54);
 	
 	drawInputStatus(50, 50);
 	drawRpmSpeed(300, 50);
 	drawLapTimeInformation(50, 300);
+	rpmDrawing(300, 300);
 }
 
 void ofApp::drawInputStatus(int x, int y) {
@@ -147,57 +167,34 @@ void ofApp::drawLapTimeInformation(int x, int y) {
 	ofPopMatrix();
 }
 
-//--------------------------------------------------------------
-void ofApp::keyPressed(int key){
+void ofApp::rpmDrawing(int x, int y) {
+	ofPushMatrix();
+	ofTranslate(x, y);
 
+	rpmFbo.draw(0, 0);
+
+	ofPopMatrix();
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key){
-
-}
-
+void ofApp::keyPressed(int key){ }
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-
-}
-
+void ofApp::keyReleased(int key){ }
 //--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
-
+void ofApp::mouseMoved(int x, int y ){ }
 //--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
-
+void ofApp::mouseDragged(int x, int y, int button){ }
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
+void ofApp::mousePressed(int x, int y, int button){ }
 //--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
+void ofApp::mouseReleased(int x, int y, int button){ }
 //--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
+void ofApp::mouseEntered(int x, int y){ }
 //--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
+void ofApp::mouseExited(int x, int y){ }
 //--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
+void ofApp::windowResized(int w, int h){ }
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
-}
+void ofApp::gotMessage(ofMessage msg){ }
+//--------------------------------------------------------------
+void ofApp::dragEvent(ofDragInfo dragInfo){ }
