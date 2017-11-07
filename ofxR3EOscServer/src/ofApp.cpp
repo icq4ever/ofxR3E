@@ -39,42 +39,29 @@ void ofApp::update(){
 	
 	//sendFloatTelemetryMessage("lapDistance", gameData->lap_distance);
 	sendStringTelemetryMessage("track", ofToString(gameData->track_name) + " - " + ofToString(gameData->layout_name));
-	sendFloatTelemetryMessage("layout_length", gameData->layout_length);
+	sendFloatTelemetryMessage("layoutLength", gameData->layout_length);
 
 	sendIntTelemetryMessage("gear", gameData->gear);
 	sendFloatTelemetryMessage("rpm", gameData->engine_rps * RPS_TO_RPM);
+	sendFloatTelemetryMessage("rpmMax", gameData->max_engine_rps * RPS_TO_RPM);
 	sendFloatTelemetryMessage("speed", gameData->car_speed * MPS_TO_KPH);
 	sendFloatTelemetryMessage("brakeTemp", (gameData->brake_temp[0] + gameData->brake_temp[1] + gameData->brake_temp[2] + gameData->brake_temp[3] / 4));
 
 	// lap information
-	sendIntTelemetryMessage("lap", gameData->completed_laps);
+	cout << gameData->lap_time_current_self << endl;
+
+	sendIntTelemetryMessage("completedLaps", gameData->completed_laps);
 	sendFloatTelemetryMessage("laptimeCurrent", gameData->lap_time_current_self);
 	sendFloatTelemetryMessage("laptimeBest", gameData->lap_time_best_self);
 	sendFloatTelemetryMessage("laptimeLast", gameData->lap_time_previous_self);
 
-	sendFloatTelemetryMessage("progress", gameData->lap_distance_fraction);
+	sendFloatTelemetryMessage("lapProgress", gameData->lap_distance_fraction);
 
 	
 	// control information
 	sendFloatTelemetryMessage("throttlePedal", gameData->throttle_pedal);
 	sendFloatTelemetryMessage("brakePedal", gameData->brake_pedal);
 	sendFloatTelemetryMessage("clutchPedal", gameData->clutch_pedal);
-	
-	
-	// track information
-	gameData->lap_distance;
-	gameData->track_name;
-	gameData->layout_length;
-	gameData->layout_name;
-
-	// lap information
-	gameData->number_of_laps;
-	gameData->completed_laps;
-
-	gameData->current_lap_valid;
-	gameData->lap_time_best_self;
-	gameData->lap_time_current_self;
-	gameData->lap_time_previous_self;
 }
 
 void ofApp::sendIntTelemetryMessage(string addressEndpoint, int value) {
