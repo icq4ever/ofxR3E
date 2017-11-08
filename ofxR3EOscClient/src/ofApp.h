@@ -4,6 +4,7 @@
 #include "ofxOsc.h"
 
 #define PORT 9000
+#define recInterval 100
 
 struct timeTemplate {
 	int min;
@@ -33,13 +34,15 @@ public:
 	ofxOscReceiver receiver;
 	string messageAddrHeader = "/telemetry/";
 
+
+	// game information
 	string carInfo;
 	string trackInfo;
 	float layoutLength;
 
 	int gear;
-	float rpm;
-	float rpmMax;
+	int rpm;
+	int rpmMax;
 	float speed;
 	float brakeTemp;
 
@@ -50,7 +53,12 @@ public:
 	// control information
 	float throttlePedal, brakePedal, clutchPedal;
 
-	// draw telemetry
+
+	// osc save
+	int64_t lastCheckedTimer;
+
+
+	// draw telemetry functions
 	void drawInputStatus(int x, int y);
 	void drawRpmSpeed(int x, int y);
 	void drawLapTimeInformation(int x, int y);
@@ -66,6 +74,10 @@ public:
 	timeTemplate bestLap;
 
 	ofFbo rpmFbo;
+
+	vector<int> tele_gears;
+	vector<int> tele_rpm;
+	vector<int> tele_speed;
 	//ofPixels rpmPixels;
 };
 

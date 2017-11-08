@@ -12,6 +12,8 @@ void ofApp::setup(){
 	ofClear(0);
 	rpmFbo.end();
 	//rpmPixels.allocate(600, 600, OF_PIXELS_RGBA);
+
+	lastCheckedTimer = ofGetElapsedTimeMillis();
 }
 
 //--------------------------------------------------------------
@@ -28,8 +30,8 @@ void ofApp::update(){
 
 		// car status
 		if (m.getAddress() == messageAddrHeader + "gear")			gear = m.getArgAsInt32(0);
-		if (m.getAddress() == messageAddrHeader + "rpm")			rpm = m.getArgAsFloat(0);
-		if (m.getAddress() == messageAddrHeader + "rpmMax")			rpmMax = m.getArgAsFloat(0);
+		if (m.getAddress() == messageAddrHeader + "rpm")			rpm = (int)m.getArgAsFloat(0);
+		if (m.getAddress() == messageAddrHeader + "rpmMax")			rpmMax = (int)m.getArgAsFloat(0);
 		if (m.getAddress() == messageAddrHeader + "speed")			speed = m.getArgAsFloat(0);
 		if (m.getAddress() == messageAddrHeader + "brakeTemp")		brakeTemp = m.getArgAsFloat(0);
 
@@ -46,9 +48,11 @@ void ofApp::update(){
 		if (m.getAddress() == messageAddrHeader + "clutchPedal")	clutchPedal = m.getArgAsFloat(0);
 	}
 
+	// save to rpmFbo
 	rpmFbo.begin();
 	ofPushMatrix();
-	ofSetHexColor(0xFFFFFF);
+	//ofSetHexColor(0xFFFFFF);
+	ofSetColor(ofColor::green.getLerped(ofColor::red, ofMap(rpm, 8000, rpmMax, 0, 1)));
 	ofNoFill();
 	ofTranslate(150, 150);
 	ofRotate(ofMap(lapProgress, 0, 1, 0, 360));
@@ -56,6 +60,7 @@ void ofApp::update(){
 	ofPopMatrix();
 	rpmFbo.end();
 
+	// save to pixel
 	//rpmFbo.readToPixels(rpmPixels);
 }
 
